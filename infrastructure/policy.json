@@ -1,0 +1,154 @@
+{
+    "permissions": [
+        {
+            "actions": [
+                "*"
+            ],
+            "notActions": [
+                "Microsoft.Authorization/*/Delete",
+                "Microsoft.Authorization/*/Write",
+                "Microsoft.Authorization/elevateAccess/Action",
+                "Microsoft.MarketplaceOrdering/*"
+            ]
+        }
+    ],
+    "parameters": {
+        "allowedLocations": {
+            "type": "array",
+            "metadata": {
+                "description": "The list of locations that can be specified when deploying resources",
+                "strongType": "location",
+                "displayName": "Allowed locations"
+            }
+        },
+        "allowedServices": {
+            "type": "array",
+            "metadata": {
+                "description": "The list of Resource Types that are allowed.",
+                "strongType": "type",
+                "displayName": "Allowed resources"
+            }
+        },
+        "allowedStorageSkus": {
+            "type": "array",
+            "metadata": {
+                "description": "The list of allowed Storage SKUs",
+                "displayName": "Allowed Storage SKUs"
+            }
+        },
+        "disallowedActions": {
+            "type": "array",
+            "metadata": {
+                "description": "The list of actions that are not allowed in the resource group",
+                "displayName": "Disallowed actions"
+            }
+        }
+    },
+    "displayName": "Allowed locations, and services",
+    "description": "This policy restrict the allowed locations, function app sites, actions, storage SKUs, and services.",
+    "policyRule": {
+        "if": {
+            "anyOf": [
+                {
+                    "not": {
+                        "field": "type",
+                        "in": "[parameters('allowedServices')]"
+                    }
+                },
+                {
+                    "not": {
+                        "field": "location",
+                        "in": "[parameters('allowedLocations')]"
+                    }
+                },
+                {
+                    "allOf": [
+                        {
+                            "field": "type",
+                            "equals": "Microsoft.Storage/storageAccounts/sku.name"
+                        },
+                        {
+                            "not": {
+                                "field": "Microsoft.Storage/storageAccounts/sku.name",
+                                "in": "[parameters('allowedStorageSkus')]"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "allOf": [
+                        {
+                            "field": "type",
+                            "equals": "Microsoft.web/sites"
+                        },
+                        {
+                            "not": {
+                                "field": "kind",
+                                "equals": "functionapp"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "source": "action",
+                    "in": "[parameters('disallowedActions')]"
+                }
+            ]
+        },
+        "then": {
+            "effect": "deny"
+        }
+    },
+    "parameters_values": {
+        "allowedLocations": {
+            "value": [
+                "{RGLocation}",
+                "WestUS",
+                "WestUS2",
+                "SouthCentralUS"
+            ]
+        },
+        "allowedServices": {
+            "value": [
+                "Microsoft.Web/sites",
+                "Microsoft.Storage/storageAccounts",
+                "Microsoft.insights/calculatebaseline",
+                "Microsoft.insights/baseline",
+                "Microsoft.insights/activityLogAlerts",
+                "Microsoft.insights/metrics",
+                "Microsoft.insights/eventCategories",
+                "Microsoft.insights/logDefinitions",
+                "Microsoft.insights/extendedDiagnosticSettings",
+                "Microsoft.insights/diagnosticSettingsCategories",
+                "Microsoft.insights/diagnosticSettings",
+                "Microsoft.insights/operations",
+                "Microsoft.insights/locations",
+                "Microsoft.insights/eventtypes",
+                "Microsoft.insights/autoscalesettings",
+                "Microsoft.insights/alertrules",
+                "Microsoft.insights/metricalerts",
+                "Microsoft.insights/logprofiles",
+                "Microsoft.insights/listMigrationdate",
+                "Microsoft.insights/components",
+                "Microsoft.insights/scheduledqueryrules"
+            ]
+        },
+        "allowedStorageSkus": {
+            "value": [
+                "Standard_LRS"
+            ]
+        },
+        "disallowedActions": {
+            "value": [
+                "Microsoft.Insights/AutoscaleSettings/Write",
+                "Microsoft.Insights/ScheduledQueryRules/Write",
+                "Microsoft.Insights/Components/WorkItemConfigs/Write",
+                "Microsoft.Insights/Components/ProactiveDetectionConfigs/Write",
+                "Microsoft.Insights/Components/PricingPlans/Write",
+                "Microsoft.Insights/ActivityLogAlerts/Write",
+                "Microsoft.Insights/Webtests/Write",
+                "Microsoft.Insights/ExtendedDiagnosticSettings/Write"
+            ]
+        }
+    }
+}
