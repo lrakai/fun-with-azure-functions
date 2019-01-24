@@ -105,7 +105,8 @@
                 "{RGLocation}",
                 "WestUS",
                 "WestUS2",
-                "SouthCentralUS"
+                "SouthCentralUS",
+                "CentralUS"
             ]
         },
         "allowedServices": {
