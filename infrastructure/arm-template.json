@@ -9,6 +9,10 @@
         "storageAccountName": {
             "type": "string",
             "defaultValue": "caazfn"
+        },
+        "containerName": {
+            "type": "string",
+            "defaultValue": "uploads"
         }
     },
     "variables": {
@@ -31,7 +35,20 @@
             },
             "tags": {
                 "Environment": "Dev"
-            }
+            },
+            "resources": [
+                {
+                    "name": "[concat('default/', parameters('containerName'))]",
+                    "type": "blobServices/containers",
+                    "apiVersion": "2018-07-01",
+                    "dependsOn": [
+                        "[variables('storageAccountName')]"
+                    ],
+                    "properties": {
+                      "publicAccess": "Container"
+                    }
+                }
+            ]
         }
     ]
 }

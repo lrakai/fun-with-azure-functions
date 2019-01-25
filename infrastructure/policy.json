@@ -113,6 +113,8 @@
             "value": [
                 "Microsoft.Web/sites",
                 "Microsoft.Storage/storageAccounts",
+                "Microsoft.Storage/storageAccounts/blobServices",
+                "Microsoft.Storage/storageAccounts/blobServices/containers",
                 "Microsoft.insights/calculatebaseline",
                 "Microsoft.insights/baseline",
                 "Microsoft.insights/activityLogAlerts",
