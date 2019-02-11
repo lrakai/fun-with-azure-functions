@@ -1,0 +1,18 @@
+{
+    "bindings": [
+        {
+            "name": "myBlob",
+            "type": "blobTrigger",
+            "direction": "in",
+            "tableName": "uploads/{name}",
+            "connection": "AzureWebJobsStorage"
+        },
+        {
+            "name": "$return",
+            "type": "table",
+            "direction": "out",
+            "tableName": "uploads",
+            "connection": "AzureWebJobsStorage"
+        }
+    ]
+}
