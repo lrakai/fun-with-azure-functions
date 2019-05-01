@@ -65,7 +65,7 @@
                     "allOf": [
                         {
                             "field": "type",
-                            "equals": "Microsoft.Storage/storageAccounts/sku.name"
+                            "equals": "Microsoft.Storage/storageAccounts/sku"
                         },
                         {
                             "not": {
